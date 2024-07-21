@@ -60,13 +60,13 @@ from FallenMusic.Helpers.thumbnails import gen_qthumb, gen_thumb
 
 
 @app.on_message(
-    filters.command(["play", "vplay", "p"])
+    filters.command(["play", "oynat"])
     & filters.group
     & ~filters.forwarded
     & ~filters.via_bot
 )
 async def play(_, message: Message):
-    fallen = await message.reply_text("» ᴘʀᴏᴄᴇssɪɴɢ, ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...")
+    fallen = await message.reply_text("» Lütfen bekleyin...")
     try:
         await message.delete()
     except:
@@ -77,7 +77,7 @@ async def play(_, message: Message):
             get = await app.get_chat_member(message.chat.id, ASS_ID)
         except ChatAdminRequired:
             return await fallen.edit_text(
-                f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
+                f"» Kullanıcıları davet etmek için bağlantı iznim yok {BOT_NAME} asistani davet edin{message.chat.title}."
             )
         if get.status == ChatMemberStatus.BANNED:
             unban_butt = InlineKeyboardMarkup(
@@ -91,7 +91,7 @@ async def play(_, message: Message):
                 ]
             )
             return await fallen.edit_text(
-                text=f"» {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ɪs ʙᴀɴɴᴇᴅ ɪɴ {message.chat.title}\n\n𖢵 ɪᴅ : `{ASS_ID}`\n𖢵 ɴᴀᴍᴇ : {ASS_MENTION}\n𖢵 ᴜsᴇʀɴᴀᴍᴇ : @{ASS_USERNAME}\n\nᴘʟᴇᴀsᴇ ᴜɴʙᴀɴ ᴛʜᴇ ᴀssɪsᴛᴀɴᴛ ᴀɴᴅ ᴘʟᴀʏ ᴀɢᴀɪɴ...",
+                text=f"» {BOT_NAME} asistan ban yemiş kiral {message.chat.title}\n\n𖢵 id : `{ASS_ID}`\n𖢵 isim : {ASS_MENTION}\n𖢵 kullanıcı adı: @{ASS_USERNAME}\n\nLütfen asistan banını kaldırın...",
                 reply_markup=unban_butt,
             )
     except UserNotParticipant:
@@ -106,28 +106,28 @@ async def play(_, message: Message):
                 invitelink = await app.export_chat_invite_link(message.chat.id)
             except ChatAdminRequired:
                 return await fallen.edit_text(
-                    f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
+                    f"» kullanıcıları davet etmek için bağlantı iznim yok {BOT_NAME} asistani davet edin{message.chat.title}."
                 )
             except Exception as ex:
                 return await fallen.edit_text(
-                    f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
+                    f"Davet ederken hata oluştu {BOT_NAME} asistani davet edin{message.chat.title}.\n\n**sebep :** `{ex}`"
                 )
         if invitelink.startswith("https://t.me/+"):
             invitelink = invitelink.replace("https://t.me/+", "https://t.me/joinchat/")
         anon = await fallen.edit_text(
-            f"ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...\n\nɪɴᴠɪᴛɪɴɢ {ASS_NAME} ᴛᴏ {message.chat.title}."
+            f"Lütfen bekleyin...\n\nDavet {ASS_NAME} ᴛᴏ {message.chat.title}."
         )
         try:
             await app2.join_chat(invitelink)
             await asyncio.sleep(2)
             await fallen.edit_text(
-                f"{ASS_NAME} ᴊᴏɪɴᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ,\n\nsᴛᴀʀᴛɪɴɢ sᴛʀᴇᴀᴍ..."
+                f"{ASS_NAME} Bot başarıyla giriş yaptı,\n\nYayın başlıyor..."
             )
         except UserAlreadyParticipant:
             pass
         except Exception as ex:
             return await fallen.edit_text(
-                f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
+                f"Davet ederken hata oluştu {BOT_NAME} asistanı davrt edin {message.chat.title}.\n\n**Sebep :** `{ex}`"
             )
         try:
             await app2.resolve_peer(invitelink)
@@ -142,14 +142,14 @@ async def play(_, message: Message):
     )
     url = get_url(message)
     if audio:
-        if round(audio.duration / 60) > DURATION_LIMIT:
+        if round(audio.duration / 300) > DURATION_LIMIT:
             raise DurationLimitError(
-                f"» sᴏʀʀʏ ʙᴀʙʏ, ᴛʀᴀᴄᴋ ʟᴏɴɢᴇʀ ᴛʜᴀɴ  {DURATION_LIMIT} ᴍɪɴᴜᴛᴇs ᴀʀᴇ ɴᴏᴛ ᴀʟʟᴏᴡᴇᴅ ᴛᴏ ᴘʟᴀʏ ᴏɴ {BOT_NAME}."
+                f"» Üzgünüm bebeğim, parça çok uzun süre  {DURATION_LIMIT} Dakikalar oynamak için izin verilmiyor {BOT_NAME}."
             )
 
         file_name = get_file_name(audio)
         title = file_name
-        duration = round(audio.duration / 60)
+        duration = round(audio.duration / 300)
         file_path = (
             await message.reply_to_message.download(file_name)
             if not os.path.isfile(os.path.join("downloads", file_name))
@@ -166,19 +166,19 @@ async def play(_, message: Message):
             secmul, dur, dur_arr = 1, 0, duration.split(":")
             for i in range(len(dur_arr) - 1, -1, -1):
                 dur += int(dur_arr[i]) * secmul
-                secmul *= 60
+                secmul *= 300
 
         except Exception as e:
-            return await fallen.edit_text(f"sᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ\n\n**ᴇʀʀᴏʀ :** `{e}`")
+            return await fallen.edit_text(f"birşeyler yanlış gitti\n\n**Hata :** `{e}`")
 
-        if (dur / 60) > DURATION_LIMIT:
+        if (dur / 300) > DURATION_LIMIT:
             return await fallen.edit_text(
-                f"» sᴏʀʀʏ ʙᴀʙʏ, ᴛʀᴀᴄᴋ ʟᴏɴɢᴇʀ ᴛʜᴀɴ  {DURATION_LIMIT} ᴍɪɴᴜᴛᴇs ᴀʀᴇ ɴᴏᴛ ᴀʟʟᴏᴡᴇᴅ ᴛᴏ ᴘʟᴀʏ ᴏɴ {BOT_NAME}."
+                f"» Üzgünüm bebeğim, parça çok uzun süre  {DURATION_LIMIT} Max Dakika {BOT_NAME}."
             )
         file_path = audio_dl(url)
     else:
         if len(message.command) < 2:
-            return await fallen.edit_text("» ᴡʜᴀᴛ ᴅᴏ ʏᴏᴜ ᴡᴀɴɴᴀ ᴘʟᴀʏ ʙᴀʙʏ ?")
+            return await fallen.edit_text("» Hangi şarkıyı oynatmak istiyorsun ?")
         await fallen.edit_text("🔎")
         query = message.text.split(None, 1)[1]
         try:
@@ -191,15 +191,15 @@ async def play(_, message: Message):
             secmul, dur, dur_arr = 1, 0, duration.split(":")
             for i in range(len(dur_arr) - 1, -1, -1):
                 dur += int(dur_arr[i]) * secmul
-                secmul *= 60
+                secmul *= 300
 
         except Exception as e:
             LOGGER.error(str(e))
-            return await fallen.edit("» ғᴀɪʟᴇᴅ ᴛᴏ ᴘʀᴏᴄᴇss ᴏ̨ᴜᴇʀʏ, ᴛʀʏ ᴘʟᴀʏɪɴɢ ᴀɢᴀɪɴ...")
+            return await fallen.edit("» Sorgu işlenemedi, tekrar dene...")
 
-        if (dur / 60) > DURATION_LIMIT:
+        if (dur / 300) > DURATION_LIMIT:
             return await fallen.edit(
-                f"» sᴏʀʀʏ ʙᴀʙʏ, ᴛʀᴀᴄᴋ ʟᴏɴɢᴇʀ ᴛʜᴀɴ  {DURATION_LIMIT} ᴍɪɴᴜᴛᴇs ᴀʀᴇ ɴᴏᴛ ᴀʟʟᴏᴡᴇᴅ ᴛᴏ ᴘʟᴀʏ ᴏɴ {BOT_NAME}."
+                f"» üzgünüm bebeğim parça çok uzun süre  {DURATION_LIMIT} max dakika  {BOT_NAME}."
             )
         file_path = audio_dl(url)
 
@@ -221,7 +221,7 @@ async def play(_, message: Message):
         qimg = await gen_qthumb(videoid, message.from_user.id)
         await message.reply_photo(
             photo=qimg,
-            caption=f"**➻ ᴀᴅᴅᴇᴅ ᴛᴏ ᴏ̨ᴜᴇᴜᴇ ᴀᴛ {position}**\n\n‣ **ᴛɪᴛʟᴇ :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n‣ **ᴅᴜʀᴀᴛɪᴏɴ :** `{duration}` ᴍɪɴᴜᴛᴇs\n‣ **ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ :** {ruser}",
+            caption=f"**➻ Sıraya Eklendi {position}**\n\n‣ **Başlık :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n‣ **Süre :** `{duration}` Dakika\n‣ **Tarafından :** {ruser}",
             reply_markup=buttons,
         )
     else:
@@ -235,15 +235,15 @@ async def play(_, message: Message):
 
         except NoActiveGroupCall:
             return await fallen.edit_text(
-                "**» ɴᴏ ᴀᴄᴛɪᴠᴇ ᴠɪᴅᴇᴏᴄʜᴀᴛ ғᴏᴜɴᴅ.**\n\nᴩʟᴇᴀsᴇ ᴍᴀᴋᴇ sᴜʀᴇ ʏᴏᴜ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ᴠɪᴅᴇᴏᴄʜᴀᴛ."
+                "**» Aktif sesli yok.**\n\nLütfen sesli açıp tekrar deneyin."
             )
         except TelegramServerError:
             return await fallen.edit_text(
-                "» ᴛᴇʟᴇɢʀᴀᴍ ɪs ʜᴀᴠɪɴɢ sᴏᴍᴇ ɪɴᴛᴇʀɴᴀʟ ᴘʀᴏʙʟᴇᴍs, ᴘʟᴇᴀsᴇ ʀᴇsᴛᴀʀᴛ ᴛʜᴇ ᴠɪᴅᴇᴏᴄʜᴀᴛ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ."
+                "» Telegram içsel bazı sorunlar yaşıyor, lütfen sesli sohbeti yeniden başlatın ve tekrar deneyin."
             )
         except UnMuteNeeded:
             return await fallen.edit_text(
-                f"» {BOT_NAME} ᴀssɪsᴛᴀɴᴛ ɪs ᴍᴜᴛᴇᴅ ᴏɴ ᴠɪᴅᴇᴏᴄʜᴀᴛ,\n\nᴘʟᴇᴀsᴇ ᴜɴᴍᴜᴛᴇ {ASS_MENTION} ᴏɴ ᴠɪᴅᴇᴏᴄʜᴀᴛ ᴀɴᴅ ᴛʀʏ ᴘʟᴀʏɪɴɢ ᴀɢᴀɪɴ."
+                f"» {BOT_NAME} Asistan Sesli Sohbette Muteli,\n\nLütfen mutesini açın {ASS_MENTION} Sesli sohbeti kapatık tekrardan müzik açmayı deneyin."
             )
 
         imgt = await gen_thumb(videoid, message.from_user.id)
@@ -251,8 +251,138 @@ async def play(_, message: Message):
         await add_active_chat(message.chat.id)
         await message.reply_photo(
             photo=imgt,
-            caption=f"**➻ sᴛᴀʀᴛᴇᴅ sᴛʀᴇᴀᴍɪɴɢ**\n\n‣ **ᴛɪᴛʟᴇ :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n‣ **ᴅᴜʀᴀᴛɪᴏɴ :** `{duration}` ᴍɪɴᴜᴛᴇs\n‣ **ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ :** {ruser}",
+            caption = f"**➻ Yayın Başladı**\n\n" \
+          f"‣ **Başlık :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n" \
+          f"‣ **Süre :** `{duration}` Dakika\n" \
+          f"‣ **Yayıncı :** {ruser}",
             reply_markup=buttons,
         )
 
     return await fallen.delete()
+
+@app.on_message(filters.command("vplay", prefixes=["/", "!", "?"]))
+async def vplay(client, message):
+    if Config.HEROKU_MODE == "ENABLE":
+        await message.reply("__Currently Heroku Mode is ENABLED so You Can't Stream Video because Video Streaming Causes Banning of Your Heroku Account__.")
+        return
+
+    title = ' '.join(message.text.split()[1:])
+    replied = message.reply_to_message
+    sender = message.from_user
+    userid = sender.id
+    chat = message.chat
+    titlegc = chat.title
+    chat_id = message.chat.id
+    from_user = vcmention(sender)
+
+    if (replied and not replied.video and not replied.document and not title) or (not replied and not title):
+        await client.send_photo(
+            chat_id, Config.CMD_IMG, 
+            caption="**Give Me Your Query Which You want to Stream**\n\n **Example**: `/vplay Nira Ishq Bass boosted`", 
+            reply_markup=btnn
+        )
+        return
+
+    if replied and not replied.video and not replied.document:
+        xnxx = await message.reply("**🔄 Processing Query... Please Wait!**")
+        query = message.text.split(maxsplit=1)[1]
+        search = ytsearch(query)
+        RESOLUSI = 720
+        hmmm = HighQualityVideo()
+        
+        if not search:
+            await xnxx.edit("**Give Me Valid Inputs**")
+        else:
+            songname, title, url, duration, thumbnail, videoid = search
+            ctitle = await CHAT_TITLE(titlegc)
+            thumb = await gen_thumb(videoid)
+            format = "best[height<=?720][width<=?1280]"
+            hm, ytlink = await ytdl(format, url)
+            
+            if hm == 0:
+                await xnxx.edit(f"`{ytlink}`")
+            elif chat_id in QUEUE:
+                pos = add_to_queue(chat_id, songname, ytlink, url, "Video", RESOLUSI)
+                caption = f"**⌛ Added to Queue at** #{pos}\n\n**💡 Title:** [{songname}]({url})\n**⏰ Duration:** `{duration}`\n👥 **Requested By:** {from_user}"
+                await xnxx.delete()
+                await client.send_photo(chat_id, thumb, caption=caption, reply_markup=btnn)
+            else:
+                try:
+                    await call_py.join_group_call(
+                        chat_id,
+                        AudioVideoPiped(ytlink, HighQualityAudio(), hmmm),
+                        stream_type=StreamType().pulse_stream,
+                    )
+                    add_to_queue(chat_id, songname, ytlink, url, "Video", RESOLUSI)
+                    caption = f"**📡 Started Streaming 💡**\n\n💡 **Title:** [{songname}]({url})\n**⏰ Duration:** `{duration}`\n👥 **Requested By:** {from_user}"
+                    await xnxx.delete()
+                    await client.send_photo(chat_id, thumb, caption=caption, reply_markup=btnn)
+                except Exception as ep:
+                    clear_queue(chat_id)
+                    await xnxx.edit(f"`{ep}`")
+
+    elif replied:
+        xnxx = await message.reply("➕ **Downloading Replied File**")
+        dl = await replied.download()
+        link = f"https://t.me/c/{chat.id}/{message.reply_to_message_id}"
+        RESOLUSI = 720 if len(message.text.split()) < 2 else int(message.text.split(maxsplit=1)[1])
+        songname = "Telegram Video Player"
+        
+        if chat_id in QUEUE:
+            pos = add_to_queue(chat_id, songname, dl, link, "Video", RESOLUSI)
+            caption = f"**⌛ Added to Queue at** #{pos}\n\n**💡 Title:** [{songname}]({link})\n👥 **Requested By:** {from_user}"
+            await client.send_photo(chat_id, ngantri, caption=caption, reply_markup=btnn)
+            await xnxx.delete()
+        else:
+            hmmm = LowQualityVideo() if RESOLUSI == 360 else MediumQualityVideo() if RESOLUSI == 480 else HighQualityVideo()
+            try:
+                await call_py.join_group_call(
+                    chat_id,
+                    AudioVideoPiped(dl, HighQualityAudio(), hmmm),
+                    stream_type=StreamType().pulse_stream,
+                )
+                add_to_queue(chat_id, songname, dl, link, "Video", RESOLUSI)
+                caption = f"**📡 Started Streaming 💡**\n\n💡 **Title:** [{songname}]({link})\n👥 **Requested By:** {from_user}"
+                await xnxx.delete()
+                await client.send_photo(chat_id, fotoplay, caption=caption, reply_markup=btnn)
+            except Exception as ep:
+                clear_queue(chat_id)
+                await xnxx.edit(f"`{ep}`")
+    else:
+        xnxx = await message.reply("**🔄 Processing Query... Please Wait!**")
+        query = message.text.split(maxsplit=1)[1]
+        search = ytsearch(query)
+        RESOLUSI = 720
+        hmmm = HighQualityVideo()
+        
+        if not search:
+            await xnxx.edit("**Unable To fetch your Query**")
+        else:
+            songname, title, url, duration, thumbnail, videoid = search
+            ctitle = await CHAT_TITLE(titlegc)
+            thumb = await gen_thumb(videoid)
+            format = "best[height<=?720][width<=?1280]"
+            hm, ytlink = await ytdl(format, url)
+            
+            if hm == 0:
+                await xnxx.edit(f"`{ytlink}`")
+            elif chat_id in QUEUE:
+                pos = add_to_queue(chat_id, songname, ytlink, url, "Video", RESOLUSI)
+                caption = f"**⌛ Added to Queue at** #{pos}\n\n💡 **Title:** [{songname}]({url})\n**⏰ Duration:** `{duration}`\n👥 **Requested By:** {from_user}"
+                await xnxx.delete()
+                await client.send_photo(chat_id, thumb, caption=caption, reply_markup=btnn)
+            else:
+                try:
+                    await call_py.join_group_call(
+                        chat_id,
+                        AudioVideoPiped(ytlink, HighQualityAudio(), hmmm),
+                        stream_type=StreamType().pulse_stream,
+                    )
+                    add_to_queue(chat_id, songname, ytlink, url, "Video", RESOLUSI)
+                    caption = f"**📡 Started Streaming 💡**\n\n🎥 **Title:** [{songname}]({url})\n**⏰ Duration:** `{duration}`\n🎧 **Requested By:** {from_user}"
+                    await xnxx.delete()
+                    await client.send_photo(chat_id, thumb, caption=caption, reply_markup=btnn)
+                except Exception as ep:
+                    clear_queue(chat_id)
+                    await xnxx.edit(f"`{ep}`")
+                    
